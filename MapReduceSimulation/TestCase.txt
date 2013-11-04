@@ -1,0 +1,7 @@
+load m_vm
+[k, total, t_max, position_optimal, position_random, position_maxvm, position_minvm] ...
+= Compare(100000, 1000, 100, m_vm, 100, 6, 2, 4, 2, 10, 300)
+
+load m_vm
+[k, total, t_max, position_optimal, position_random, position_maxvm, position_minvm] ...
+    = Compare(100000, 1000, 100, m_vm, 100, 1.5, 0.5, 1, 0.5, 10, 300)
