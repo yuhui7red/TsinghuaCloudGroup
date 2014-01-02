@@ -1,0 +1,34 @@
+Simulation v2.0
+Copyright (c) 20013 - 2014 TsinghuaCloud
+Web site: https://github.com/yuhui7red/TsinghuaCloud.git
+
+Description
+===========
+
+Simulate the process of our optimal MapReduce
+
+Versions History
+================
+
+* Version 2.0:
+  o This version takes into account the load on the servers.
+
+* Version 1.0 - First release. 
+
+Using Simulation
+================
+
+More Comments...
+================
+
+License
+=======
+
+This utility is released as freeware.
+
+Feedback
+========
+
+If you have any problem, suggestion, comment, or you found a bug in my
+utility, you can send a message to yuhui7red@outlook.com
+
