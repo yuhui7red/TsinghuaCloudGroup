@@ -10,7 +10,7 @@ function [serial_number, Na] = RandomDeploy(m_vm, k)
      %输入：m_vm-每台服务器上VM的数量；k-路由器的数量
      %输出：serial_number-路由器所在最有位置的下标
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+m_vm = m_vm';
 serial_number = randperm(length(m_vm));
 serial_number = serial_number(1: k);
 Na = 0;
