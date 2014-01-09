@@ -11,7 +11,7 @@ function [serial_number, Na] = NewKnapsackDeploy(m_vm, k, optimal)
      %输出：Na-选出的服务器vm数之和；serial_number-路由器所在最有位置的下标
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-m_vm = m_vm';
+% m_vm = m_vm';
 
 if (optimal < 0)
     optimal = 0;

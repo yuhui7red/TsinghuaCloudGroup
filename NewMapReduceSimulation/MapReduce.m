@@ -10,8 +10,8 @@ function [total_time, max_vm_time, agent_position] = MapReduce(map_data, server_
      %功能：1.整个MapReduce阶段vm经历的时间之和 2.整个MapReduce阶段的时间
      %3.获得k的不同取值下路由器的最佳位置
      %输入：map_data-发送的总数据量；server_number-服务器的数量；vm_number-Virtual Machine的数量
-     %agent_number-云平台中agent的数量；server_info-第一列：server id第二列：每台server上vm的数量；
-     %第三列：server上最大的vm负载；第四列：只开一台vm无agent的性能；第五列：只开一台vm有agent的性能；第六列：是否有agent；
+     %agent_number-云平台中agent的数量；server_info-第一列：server id第二列：每台server上vm的数量；agent_number-云平台中agent的数量
+     %第三列：server上最大的vm负载；第四列：只开一台vm无agent的性能；第五列：有agent的性能比例；第六列：是否有agent；
      %vm_info-第一列：编号；第二列：所在server的编号；第三列：性能
      %speed-数据传送的速度；reduce_data-reduce阶段的数据量；reducer_number-reduce阶段的数据
      %deploy_strategy-agent的部署策略；assign_strategy-agent的分配策略
@@ -25,10 +25,19 @@ t1 = map_data / speed * vm_number;
 % t2-agent把数据转发给vm的时间
 % agent的部署方案
 if (deploy_strategy == 1)
+    % 利用公式计算出vm_info第四列capability的值
+    for i = 1: 1: vm_number
+        vm_info(i, 3) = VMCapabilityEvaluation(server_info(vm_info(i, 2), 3), ...
+            server_info(vm_info(i, 2), 4), server_info(vm_info(i, 2), 5), ...
+            server_info(vm_info(i, 2), 2), server_info(vm_info(i, 2), 6));
+    end
+    % 算出空载时vm的处理性能之和
+    capability = sum(vm_info(:, 3));
     % 利用聪哥的公式求出最优的agent所在server上的vm数
-    % optimal=...
+    % 注意rate
+    optimal = round(GetOptimalVMAgentNumber(map_data, vm_number, agent_number, 0.855, capability, speed, reduce_data, reducer_number));
     % 利用背包求出最接近的agent部署方案
-    % [agent_position, vm_agent_number] = NewKnapsack(server_info(:,2), agent_number, optimal);
+    [agent_position, vm_agent_number] = NewKnapsackDeploy(server_info(:,2), agent_number, optimal);
 elseif (deploy_strategy == 2)
     [agent_position, vm_agent_number] = MaxFirstDeploy(server_info(:,2), agent_number);
 elseif (deploy_strategy == 3)
@@ -42,12 +51,12 @@ for i = 1: 1: length(agent_position)
     server_info(agent_position(i), 6) = 1;
 end
 
-% 利用公式计算出vm_info第四列capacity的值
+% 利用公式计算出vm_info第四列capability的值
 for i = 1: 1: vm_number
     vm_info(i, 3) = VMCapabilityEvaluation(server_info(vm_info(i, 2), 3), ...
         server_info(vm_info(i, 2), 4), server_info(vm_info(i, 2), 5), ...
         server_info(vm_info(i, 2), 2), server_info(vm_info(i, 2), 6));
-end
+end    
 
 % 统计出所在server上没有agent的vm的capability
 rest_vm_capability = [];
@@ -94,12 +103,12 @@ for i = 1: 1: size(reducer_position, 1)
     end
 end
 % 随机找出工作agent的位置
-work_agent_number = randi(reducer_number, 1, 1);
+work_agent_number = randi(agent_number, 1, 1);
 work_agent_position = agent_position(randperm(work_agent_number));
 work_agent_position = work_agent_position(1: work_agent_number);
 % 统计工作的agent所在server上的vm数
 work_agent_vm = 0;
-for i = 1: 1: size(work_agent_position, 1)
+for i = 1: 1: length(work_agent_position)
    work_agent_vm = work_agent_vm + server_info(work_agent_position(i), 2);
 end
 % 统计所在server上没有agent的reducer数
@@ -114,7 +123,8 @@ end
 
 % 算出总时间
 t4 = (vm_number-vm_agent_number)*reduce_data*reducer_number/(agent_number*speed) ...
-    + (vm_number*reduce_data*reducer_number/speed - reduce_data/speed*work_agent_vm) ...
+    + (vm_number*reduce_data*reducer_number/speed - reduce_data/speed*(work_agent_vm ...
++ (vm_number-vm_agent_number)*work_agent_vm/vm_agent_number)) ...
     + vm_number*reduce_data/speed*reducer_noagent;
 
 % 整个过程等待的总时间
@@ -122,7 +132,8 @@ total_time = t1 + t2 + t3 + t4;
 
 % 整个过程经历的时间
 max_vm_time = max_vm_time + (vm_number-vm_agent_number)*reduce_data/(agent_number*speed)...
-    + vm_number*reduce_data*reducer_number/speed;
+    + (vm_number*reduce_data*reducer_number/speed - reduce_data/speed*(work_agent_vm ...
+    + (vm_number-vm_agent_number)*work_agent_vm/vm_agent_number));
 % 如果存在一个没有工作agent的reduce，就需要加上最后一项转发时间
 if (isFind == 1)
     max_vm_time = max_vm_time + vm_number*reduce_data/speed;

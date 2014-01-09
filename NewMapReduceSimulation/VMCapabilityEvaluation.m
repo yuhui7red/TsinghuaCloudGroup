@@ -1,5 +1,5 @@
 function [capability] = VMCapabilityEvaluation(maximum_load, noagent_optimal_performance, ...
-    agent_optimal_performance, current_load, has_agent)
+    agent_rate, current_load, has_agent)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %VMCapabilityEvaluation.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -13,10 +13,9 @@ function [capability] = VMCapabilityEvaluation(maximum_load, noagent_optimal_per
      %输出：capability-vm的性能
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-decrease_rate = agent_optimal_performance / noagent_optimal_performance;
-capability = noagent_optimal_performance - noagent_optimal_performance/(maximum_load + 1) * (current_load - 1);
+capability = noagent_optimal_performance - noagent_optimal_performance/(maximum_load + 2) * (current_load - 1);
 if (has_agent == 1) 
-    capability = capability * decrease_rate;
+    capability = capability * agent_rate;
 end
 
 end
