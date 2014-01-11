@@ -1,4 +1,4 @@
-function [vm_assignment, vm_info] = RandomAssign(r_vm_u, k, agent_position, vm_info)
+function [vm_assignment] = RandomAssign(r_vm_u, k)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %RandomAssign.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -13,11 +13,13 @@ function [vm_assignment, vm_info] = RandomAssign(r_vm_u, k, agent_position, vm_i
 vm_assignment = zeros(k, 1);
 vm_assignment = [vm_assignment , vm_assignment, agent_position'];
 
-for i = 1: 1: size(r_vm_u, 1)
+vm_assignment = zeros(k, 1);
+vm_assignment = [vm_assignment, vm_assignment];
+
+for i = 1: 1: length(r_vm_u)
     index = randi(k, 1, 1);
     vm_assignment(index, 1) = vm_assignment(index, 1) + 1;
-    vm_assignment(index, 2) = vm_assignment(index, 2) + r_vm_u(i, 2);
-    vm_info(r_vm_u(i, 1), 4) = vm_assignment(index, 3);
+    vm_assignment(index, 2) = vm_assignment(index, 2) + r_vm_u(i);
 end
 
 end

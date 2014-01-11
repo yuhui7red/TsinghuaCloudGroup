@@ -1,4 +1,4 @@
-function [vm_assignment, vm_info] = LoadBalancingAssign(r_vm_u, k, agent_position, vm_info)
+function [vm_assignment, vm_info] = LoadBalancingAssign(r_vm_u, k, vm_info)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %LoadBalancingAssign.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12,7 +12,7 @@ function [vm_assignment, vm_info] = LoadBalancingAssign(r_vm_u, k, agent_positio
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 vm_assignment = zeros(k, 1);
-vm_assignment = [vm_assignment , vm_assignment, agent_position'];
+vm_assignment = [vm_assignment, vm_assignment];
 r_vm_u = sortrows(r_vm_u, 2);
 % Ωµ–Ú≈≈¡–
 temp = r_vm_u;
@@ -20,23 +20,21 @@ for i = 1: 1: size(r_vm_u, 1)
     r_vm_u(i, :) = temp(size(r_vm_u, 1) - i + 1, :);
 end
 
-for i = 1: 1: min(k+1, size(r_vm_u, 1))
+for i = 1: 1: min(k+1, length(r_vm_u))
     if i == k+1
         vm_assignment(k, 1) = vm_assignment(k, 1) + 1;
         vm_assignment(k, 2) = vm_assignment(k, 2) + r_vm_u(i, 2);
-        vm_info(r_vm_u(i, 1), 4) = vm_assignment(k, 3);
+        vm_info(r_vm_u(i, :), 4) = 
     else
         vm_assignment(i, 1) = vm_assignment(i, 1) + 1;
         vm_assignment(i, 2) = vm_assignment(i, 2) + r_vm_u(i, 2);
-        vm_info(r_vm_u(i, 1), 4) = vm_assignment(i, 3);
     end
 end
 
-for i = k+2: 1: size(r_vm_u, 1)
+for i = k+2: 1: length(r_vm_u)
     [Min, index] = min(vm_assignment(:, 2));
     vm_assignment(index, 1) = vm_assignment(index, 1) + 1;
-    vm_assignment(index, 2) = vm_assignment(index, 2) + r_vm_u(i, 2);
-    vm_info(r_vm_u(i, 1), 4) = vm_assignment(index, 3);
+    vm_assignment(index, 2) = vm_assignment(index, 2) + r_vm_u(i);
 end
 
 end

@@ -35,7 +35,7 @@ if (deploy_strategy == 1)
     capability = sum(vm_info(:, 3));
     % 利用聪哥的公式求出最优的agent所在server上的vm数
     % 注意rate
-    optimal = round(GetOptimalVMAgentNumber(map_data, vm_number, agent_number, server_info(1, 5), capability, speed, reduce_data, reducer_number))
+    optimal = round(GetOptimalVMAgentNumber(map_data, vm_number, agent_number, server_info(1, 5), capability, speed, reduce_data, reducer_number));
     % 利用背包求出最接近的agent部署方案
     [agent_position, vm_agent_number] = NewKnapsackDeploy(server_info(:,2), agent_number, optimal);
 elseif (deploy_strategy == 2)
@@ -117,13 +117,20 @@ for i = 1: 1: size(reducer_info, 1)
         isFind = 1;
         index = find(vm_assignment(:, 3) == reducer_info(i, 4));
         if (ismember(index, existed_index) == 0)
-            work_agent_vm = work_agent_vm + server_info(vm_assignment(index, 3), 2);
+            work_agent_vm = work_agent_vm + server_info(reducer_info(i, 2), 2);
             existed_index = [existed_index, index];
+            
+%             work_agent_vm = work_agent_vm + vm_assignment(index, 1);
+%             existed_external_index = [existed_external_index, index];
+%             if (ismember(server_info(reducer_info(i, 2), 1), existed_internal_index) == 0)
+%                 work_agent_vm = work_agent_vm + server_info(reducer_info(i, 2), 2);
+%                 existed_internal_index = [existed_internal_index, server_info(reducer_info(i, 2), 1)];
+%             end
         end    
     else 
-        if (ismember(server_info(reducer_info(i, 2), 1), existed_index) == 0)
+        if (ismember(server_info(reducer_info(i, 2), 1), existed_internal_index) == 0)
             work_agent_vm = work_agent_vm + server_info(reducer_info(i, 2), 2);
-            existed_index = [existed_index, server_info(reducer_info(i, 2), 1)];
+            existed_internal_index = [existed_internal_index, server_info(reducer_info(i, 2), 1)];
         end
     end
 end
