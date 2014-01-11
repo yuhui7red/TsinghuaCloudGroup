@@ -35,7 +35,7 @@ if (deploy_strategy == 1)
     capability = sum(vm_info(:, 3));
     % 利用聪哥的公式求出最优的agent所在server上的vm数
     % 注意rate
-    optimal = round(GetOptimalVMAgentNumber(map_data, vm_number, agent_number, server_info(1, 5), capability, speed, reduce_data, reducer_number))
+    optimal = round(GetOptimalVMAgentNumber(map_data, vm_number, agent_number, server_info(1, 5), capability, speed, reduce_data, reducer_number));
     % 利用背包求出最接近的agent部署方案
     [agent_position, vm_agent_number] = NewKnapsackDeploy(server_info(:,2), agent_number, optimal);
 elseif (deploy_strategy == 2)
@@ -107,7 +107,7 @@ for i = 1: 1: size(reducer_position, 1)
 end
 % 随机找出工作agent的位置
 work_agent_number = randi(agent_number, 1, 1);
-work_agent_position = agent_position(randperm(work_agent_number));
+work_agent_position = agent_position(randperm(agent_number));
 work_agent_position = work_agent_position(1: work_agent_number);
 % 统计工作的agent所在server上的vm数
 work_agent_vm = 0;

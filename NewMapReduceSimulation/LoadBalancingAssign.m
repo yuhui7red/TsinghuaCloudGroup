@@ -15,13 +15,18 @@ vm_assignment = zeros(k, 1);
 vm_assignment = [vm_assignment, vm_assignment];
 r_vm_u = sort(r_vm_u, 'descend');
 
-for i = 1: 1: min(k, r_vm_u)
-    vm_assignment(i, 1) = vm_assignment(i, 1) + 1;
-    vm_assignment(i, 2) = vm_assignment(i, 2) + r_vm_u(i);
+for i = 1: 1: min(k+1, length(r_vm_u))
+    if i == k+1
+        vm_assignment(k, 1) = vm_assignment(k, 1) + 1;
+        vm_assignment(k, 2) = vm_assignment(k, 2) + r_vm_u(i);
+    else
+        vm_assignment(i, 1) = vm_assignment(i, 1) + 1;
+        vm_assignment(i, 2) = vm_assignment(i, 2) + r_vm_u(i);
+    end
 end
 
-for i = k+1: 1: length(r_vm_u)
-    [Max, index] = min(vm_assignment(:, 2));
+for i = k+2: 1: length(r_vm_u)
+    [Min, index] = min(vm_assignment(:, 2));
     vm_assignment(index, 1) = vm_assignment(index, 1) + 1;
     vm_assignment(index, 2) = vm_assignment(index, 2) + r_vm_u(i);
 end
