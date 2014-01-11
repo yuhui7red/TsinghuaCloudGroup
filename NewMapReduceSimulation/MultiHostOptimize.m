@@ -1,4 +1,4 @@
-function [k, total_max, position] = MultiHostOptimize(map_data, server_number, vm_number, agent_number, ...
+function [k, total_max, position] = MultiHostOptimize(map_data, server_number, vm_number, ...
     server_info, vm_info, speed, reduce_data, reducer_number, deploy_strategy, assign_strategy )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %MultiHostOptimize.m
@@ -17,17 +17,17 @@ function [k, total_max, position] = MultiHostOptimize(map_data, server_number, v
      %输出：k-最优的时间；total_max-最优的时间总和和时间跨度；position-路由器的位置
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-total_max = 1: 1: agent_number;
+total_max = 1: 1: server_number;
 total_max = total_max';
-total_max = [total_max, zeros(agent_number, 1), zeros(agent_number, 1)];
+total_max = [total_max, zeros(server_number, 1), zeros(server_number, 1)];
 position = [];
 
-for i = 1: 1: agent_number
+for i = 1: 1: server_number
     [total_time, max_vm_time, agent_position] = MapReduce(map_data, server_number, vm_number, i, ...
         server_info, vm_info, speed, reduce_data, reducer_number, deploy_strategy, assign_strategy);
     total_max(i, 2) = total_time;
     total_max(i, 3) = max_vm_time;
-    agent_position = [agent_position, zeros(agent_number-i, 1)'];
+    agent_position = [agent_position, zeros(server_number-i, 1)'];
     position = [position; agent_position];
 end
 

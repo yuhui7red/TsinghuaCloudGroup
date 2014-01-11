@@ -15,7 +15,7 @@ vm_assignment = zeros(k, 1);
 vm_assignment = [vm_assignment, vm_assignment];
 r_vm_u = sort(r_vm_u, 'descend');
 
-for i = 1: 1: k
+for i = 1: 1: min(k, r_vm_u)
     vm_assignment(i, 1) = vm_assignment(i, 1) + 1;
     vm_assignment(i, 2) = vm_assignment(i, 2) + r_vm_u(i);
 end

@@ -11,8 +11,6 @@ function [serial_number, Na] = NewKnapsackDeploy(m_vm, k, optimal)
      %输出：Na-选出的服务器vm数之和；serial_number-路由器所在最有位置的下标
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% m_vm = m_vm';
-
 if (optimal < 0)
     optimal = 0;
 end
@@ -25,6 +23,10 @@ m = sum(m_vm);
 if (optimal > m)
     optimal = m;
 end
+
+%% 非常总要的一行代码
+temp_vm = m_vm;
+m_vm = sort(m_vm);
 
 %所有的状态
 dp = zeros(n + 1, m + 1);
@@ -106,7 +108,7 @@ while (isFind == 0)
     offset = offset + 1;
 end
 
-[serial_number] = GetSerialNumber(m_vm, k, L);
+[serial_number] = GetSerialNumber(temp_vm', k, L);
 
 end
 

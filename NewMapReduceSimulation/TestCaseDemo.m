@@ -1,2 +1,8 @@
-[k, total_max, position] = MultiHostOptimize(200000, 20, 245, 6, server_info_001, vm_info_001, 100, 50, 80, 1, 1);
+% [total_time, max_vm_time, agent_position] = MapReduce(2000000, 20, 245, 20, ...
+%     server_info_001, vm_info_001, 100, 5, 80, 1, 1)
 
+[total_time, max_vm_time, agent_position] = MapReduce(2000000, 20, 245, 6, ...
+    server_info_001, vm_info_001, 100, 5, 80, 1, 1)
+
+[total_time, max_vm_time, agent_position] = MapReduce(2000000, 20, 245, 6, ...
+    server_info_001, vm_info_001, 100, 5, 80, 2, 1)

@@ -25,11 +25,12 @@ for i = 1: 1: size(m_vm_temp, 1)
     if (j == k + 1)
         break;
     end
-    if (serial_number(1, j) == m_vm_temp(i, 1))
-        serial_number(1, j) = m_vm_temp(i, 2);
+    if (serial_number(j) == m_vm_temp(i, 1))
+        serial_number(j) = m_vm_temp(i, 2);
         j = j + 1;
     end
 end
+
 serial_number = sort(serial_number);
 
 end

@@ -35,7 +35,7 @@ if (deploy_strategy == 1)
     capability = sum(vm_info(:, 3));
     % 利用聪哥的公式求出最优的agent所在server上的vm数
     % 注意rate
-    optimal = round(GetOptimalVMAgentNumber(map_data, vm_number, agent_number, 0.855, capability, speed, reduce_data, reducer_number));
+    optimal = round(GetOptimalVMAgentNumber(map_data, vm_number, agent_number, server_info(1, 5), capability, speed, reduce_data, reducer_number))
     % 利用背包求出最接近的agent部署方案
     [agent_position, vm_agent_number] = NewKnapsackDeploy(server_info(:,2), agent_number, optimal);
 elseif (deploy_strategy == 2)
@@ -75,13 +75,16 @@ end
 
 % 数据在网络上的传输远远快于在vm的处理能力
 t2 = 0;
+max_transmission_time = 0;
 capability = sum(vm_info(:, 3));
-max_transmission_time = vm_assignment(1, 2) / capability * map_data / speed;
-for i = 1: 1: agent_number
-    transmission_time = vm_assignment(i, 2) / capability * map_data / speed;
-    t2 = t2 + transmission_time;
-    if transmission_time > max_transmission_time
-        max_transmission_time = transmission_time;
+if (agent_number ~= server_number)
+    max_transmission_time = vm_assignment(1, 2) / capability * map_data / speed;
+    for i = 1: 1: agent_number
+        transmission_time = vm_assignment(i, 2) / capability * map_data / speed;
+        t2 = t2 + transmission_time;
+        if transmission_time > max_transmission_time
+            max_transmission_time = transmission_time;
+        end
     end
 end
 
