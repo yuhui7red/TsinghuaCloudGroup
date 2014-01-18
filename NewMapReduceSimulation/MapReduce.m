@@ -91,6 +91,7 @@ if (agent_number ~= server_number)
         end
     end
 end
+t2 = t2 / agent_number;
 
 % t3-vm处理数据的时间
 t3 =  map_data/capability * vm_number;
