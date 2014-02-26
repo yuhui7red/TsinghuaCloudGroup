@@ -2,7 +2,7 @@ def sayHello():
     print "Hello World!"
 
 def sayGoodbye():
-    print "Bye bye!"
+    print "Fuck"
 
 sayHello()
 sayGoodbye()
