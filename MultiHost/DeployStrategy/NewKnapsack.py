@@ -1,4 +1,4 @@
-def KnapsackDeploy(vmOnServer, agentNumber, optimal):
+def NewKnapsack(vmOnServer, agentNumber, optimal):
     serverNumber = len(vmOnServer)
     vmSum = sum(vmOnServer)
     dp = [[0 for i in range(vmSum+1)] for i in range(agentNumber+1)]
