@@ -1,4 +1,4 @@
-import sys;
+import sys
 if not "../Controller/" in sys.path:
     sys.path.append("../Controller/")
 
