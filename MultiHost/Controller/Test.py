@@ -1,4 +1,4 @@
-import sys
+import sys;
 if not "../Controller/" in sys.path:
     sys.path.append("../Controller/")
 
@@ -9,7 +9,8 @@ import os, urllib, httplib, json, base64
 from urlparse import urlparse
 from APIToken import APIToken
 from Authentication import Authenticate
-from Network import ListNetworks
+#from Networks import ListNetworks
+from Routers import ListRouters
 
 authentication = Authenticate('166.111.143.250', 'admin', 'admin', 'cer.cloud')
 apiToken = APIToken()
@@ -18,6 +19,8 @@ apiToken._authentication = authentication
 token = apiToken.GetToken()
 networkIP = apiToken.GetNetworkIP()
 
-data = ListNetworks(token, networkIP)
+data = ListRouters(token, networkIP)
+#data = ListNetworks(token, networkIP)
 
 print data
+
