@@ -11,16 +11,19 @@ from APIToken import APIToken
 from Authentication import Authenticate
 #from Networks import ListNetworks
 from Routers import ListRouters
+from Servers import ListServers
 
 authentication = Authenticate('166.111.143.250', 'admin', 'admin', 'cer.cloud')
 apiToken = APIToken()
 apiToken._authentication = authentication
 
 token = apiToken.GetToken()
-networkIP = apiToken.GetNetworkIP()
+#networkIP = apiToken.GetNetworkIP()
+computeIP = apiToken.GetNetworkIP()
 
-data = ListRouters(token, networkIP)
+#data = ListRouters(token, networkIP)
 #data = ListNetworks(token, networkIP)
+data = ListServers(token, computeIP)
 
 print data
 
