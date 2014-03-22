@@ -19,7 +19,7 @@ apiToken._authentication = authentication
 
 token = apiToken.GetToken()
 #networkIP = apiToken.GetNetworkIP()
-computeIP = apiToken.GetNetworkIP()
+computeIP = apiToken.GetComputeIP()
 
 #data = ListRouters(token, networkIP)
 #data = ListNetworks(token, networkIP)
