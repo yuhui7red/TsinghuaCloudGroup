@@ -15,8 +15,9 @@ cursor.execute(sql)
 data = cursor.fetchall()
 
 if data:
-    for element in data:
-        print element[0]
+#    for element in data:
+#        print element
+    print data
 
 cursor.close()
 
