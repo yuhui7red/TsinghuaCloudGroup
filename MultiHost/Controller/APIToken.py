@@ -18,6 +18,11 @@ class APIToken(object):
         token = self._authentication['access']['token']['id']
         return token
 
+    def GetTenantID(self):
+        tempURL = urlparse(self._authentication['access']['serviceCatalog'][0]['endpoints'][0]['publicURL'])
+        tenantID = tempURL[2]
+        return tenantID
+
     def GetComputeIP(self):
         tempURL = urlparse(self._authentication['access']['serviceCatalog'][0]['endpoints'][0]['publicURL'])
         computeURL = tempURL[1]

@@ -20,10 +20,13 @@ apiToken._authentication = authentication
 token = apiToken.GetToken()
 #networkIP = apiToken.GetNetworkIP()
 computeIP = apiToken.GetComputeIP()
+print computeIP
+tenantID = apiToken.GetTenantID()
+print tenantID	
 
 #data = ListRouters(token, networkIP)
 #data = ListNetworks(token, networkIP)
-data = ListServers(token, computeIP)
+data = ListServers(token, computeIP, tenantID)
 
 print data
 
