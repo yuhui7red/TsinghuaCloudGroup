@@ -3,6 +3,8 @@ if not "../Controller/" in sys.path:
     sys.path.append("../Controller/")
 if not "../NetworksConstruction/" in sys.path:
     sys.path.append("../NetworksConstruction/")
+if not "../ComputeConstruction/" in sys.path:
+    sys.path.append("../ComputeConstruction/")
 if not "../Evaluation/" in sys.path:
     sys.path.append("../Evaluation/")
 
