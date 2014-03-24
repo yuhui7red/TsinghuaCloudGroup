@@ -4,7 +4,6 @@ import MySQLdb
 def GetComputeNodesInfo(host, user, passwd, db):
     try:
         conn = MySQLdb.connect(host, user, passwd, db)
-
     except Except, e:
         print e
         sys.exit()
@@ -20,3 +19,4 @@ def GetComputeNodesInfo(host, user, passwd, db):
 
     return data
 
+#print GetComputeNodesInfo('166.111.143.250', 'root', 'cer.cloud', 'nova')
