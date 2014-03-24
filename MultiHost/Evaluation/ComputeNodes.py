@@ -18,5 +18,3 @@ def GetComputeNodesInfo(host, user, passwd, db):
     conn.close()
 
     return data
-
-#print GetComputeNodesInfo('166.111.143.250', 'root', 'cer.cloud', 'nova')

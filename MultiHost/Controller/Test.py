@@ -10,9 +10,9 @@ import os, urllib, httplib, json, base64
 from urlparse import urlparse
 from APIToken import APIToken
 from Authentication import Authenticate
-from Flavors import ListFlavors
+from Flavors import ListFlavors, GetFlavors
 from Routers import ListRouters
-from Servers import ListServers
+from Servers import ListServers, DeleteServers
 
 authentication = Authenticate('166.111.143.250', 'admin', 'admin', 'cer.cloud')
 apiToken = APIToken()
@@ -21,13 +21,11 @@ apiToken._authentication = authentication
 token = apiToken.GetToken()
 #networkIP = apiToken.GetNetworkIP()
 computeIP = apiToken.GetComputeIP()
-print computeIP
 tenantID = apiToken.GetTenantID()
-print tenantID	
 
 #data = ListRouters(token, networkIP)
 #data = ListNetworks(token, networkIP)
-data = ListFlavors(token, computeIP, tenantID)
-
-print data
+data = ListServers(token, computeIP, tenantID)
+temp = data['servers'][0]['id']
+DeleteServers(token, computeIP, tenantID, temp)
 

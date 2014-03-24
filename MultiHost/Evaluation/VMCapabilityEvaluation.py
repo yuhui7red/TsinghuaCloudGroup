@@ -3,5 +3,3 @@ def VMCapabilityEvaluation(maxLoad, noAgentOptimalPerformance, agentDecreaseRate
     if (hasAgent == 1):
         capability = capability * agentDecreaseRate
     return capability
-
-print VMCapabilityEvaluation(8, 1.634394, 0.8550, 7, 1)

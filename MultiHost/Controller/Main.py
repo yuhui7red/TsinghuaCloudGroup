@@ -14,16 +14,21 @@ from APIToken import APIToken
 from Authentication import Authenticate
 from ComputeNodes import GetComputeNodesInfo
 from VMCapabilityEvaluation import VMCapabilityEvaluation
+from Flavors import ListFlavors, GetFlavors
 
 authentication = Authenticate('166.111.143.250', 'admin', 'admin', 'cer.cloud')
 apiToken = APIToken()
 apiToken._authentication = authentication
 token = apiToken.GetToken()
+computeIP = apiToken.GetComputeIP()
+tenantID = apiToken.GetTenantID()
 
 computeNodesInfo = GetComputeNodesInfo('166.111.143.250', 'root', 'cer.cloud', 'nova')
 serverNumber = len(computeNodesInfo)
 serverInfo = [[0 for i in range(4)] for i in range(serverNumber)]
 
+flavorJson = ListFlavors(token, computeIP, tenantID)
+flavorTemplate =  GetFlavors(flavorJson)
 flavor = (1, 512)
 for i in range(len(computeNodesInfo)):
     serverInfo[i][0] = computeNodesInfo[i][0]
