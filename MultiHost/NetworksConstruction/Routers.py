@@ -12,4 +12,15 @@ def ListRouters(token, networkURL):
     conn.close()
     return response_json
 
+def GetRoutersID(responseJson, tenantID):
+    routersID = []
+    for element in responseJson['routers']:
+        if element['tenant_id'] == tenantID:
+            routersID.append(element['id'])
+    return routersID
+
+def DeleteRouter(token, networkURL, tenantID, routerID):
+    return 1
+    
+
 

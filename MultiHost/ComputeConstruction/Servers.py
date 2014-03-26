@@ -12,7 +12,7 @@ def ListServers(token, computeURL, tenantID):
     conn.close()
     return response_json
 
-def DeleteServers(token, computeURL, tenantID, serverID):
+def DeleteServer(token, computeURL, tenantID, serverID):
     params = urllib.urlencode({})
     headers = {"X-Auth-Token":token, "Content-type":"application/json"}
     conn = httplib.HTTPConnection(computeURL)

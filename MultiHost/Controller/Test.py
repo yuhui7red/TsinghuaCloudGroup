@@ -11,21 +11,24 @@ from urlparse import urlparse
 from APIToken import APIToken
 from Authentication import Authenticate
 from Flavors import ListFlavors, GetFlavors
-from Routers import ListRouters
-from Servers import ListServers, DeleteServers
+from Routers import ListRouters, DeleteRouter, GetRoutersID
+from Servers import ListServers, DeleteServer
 
 authentication = Authenticate('166.111.143.250', 'admin', 'admin', 'cer.cloud')
 apiToken = APIToken()
 apiToken._authentication = authentication
 
 token = apiToken.GetToken()
-#networkIP = apiToken.GetNetworkIP()
-computeIP = apiToken.GetComputeIP()
+networkIP = apiToken.GetNetworkIP()
+#computeIP = apiToken.GetComputeIP()
 tenantID = apiToken.GetTenantID()
+tenantID = tenantID[4:]
 
-#data = ListRouters(token, networkIP)
+data = ListRouters(token, networkIP)
 #data = ListNetworks(token, networkIP)
-data = ListServers(token, computeIP, tenantID)
-temp = data['servers'][0]['id']
-DeleteServers(token, computeIP, tenantID, temp)
+#data = ListServers(token, computeIP, tenantID)
+#temp = data['servers'][0]['id']
+#DeleteServers(token, computeIP, tenantID, temp)
+result = GetRoutersID(data, tenantID)
+print data
 
