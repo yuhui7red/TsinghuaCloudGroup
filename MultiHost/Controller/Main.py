@@ -51,7 +51,8 @@ for i in range(serverNumber):
 for element in vmInfo:
     print element
 
-
+for element in serverInfo:
+    print element
 
 
 

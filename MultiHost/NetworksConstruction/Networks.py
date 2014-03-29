@@ -11,4 +11,24 @@ def ListNetworks(token, networkURL):
     response_json = json.loads(response_data)
     conn.close()
     return response_json
-    
+
+def CreateNetworks(token, networkURL, networkNumbers):
+    for i in range(networkNumbers):
+        name = 'network' + str(i + 1)
+        params = '{"network": {"name":"%s", "admin_state_up":true}}' % name
+        headers = {"X-Auth-Token":token, "Content-type":"application/json"}
+        connection = httplib.HTTPConnection(networkURL)
+        connection.request("POST", "/v2.0/networks", params, headers)
+        response = connection.getresponse()
+        response_data = response.read()
+        response_json = json.loads(response_data)
+        connection.close()
+
+def GetNetworksID(responseJson, tenantID):
+    networksID = []
+    for element in responseJson['networks']:
+        if element['tenant_id'] == tenantID and element['name'][0:7] == 'network':
+            networksID.append([element['id'], element['name']])
+    networksID = sorted(networksID, key=lambda d:d[1])
+    return networksID
+

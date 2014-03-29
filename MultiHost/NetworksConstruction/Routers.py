@@ -16,11 +16,42 @@ def GetRoutersID(responseJson, tenantID):
     routersID = []
     for element in responseJson['routers']:
         if element['tenant_id'] == tenantID:
-            routersID.append(element['id'])
+            routersID.append([element['id'], element['name']])
+    routersID = sorted(routersID, key=lambda d:d[1])
     return routersID
 
 def DeleteRouter(token, networkURL, tenantID, routerID):
-    return 1
+    # nothing to do 
+    return
     
+def CreateRouters(token, networkURL, routerNumbers):
+    for i in range(routerNumbers):
+        name = 'router' + str(i + 1)
+        params = '{"router": {"name":"%s", "admin_state_up":true}}' % name
+        headers = {"X-Auth-Token":token, "Content-type":"application/json"}
+        connection = httplib.HTTPConnection(networkURL)
+        connection.request("POST", "/v2.0/routers", params, headers)
+        response = connection.getresponse()
+        response_data = response.read()
+        response_json = json.loads(response_data)
+        connection.close()
+
+def SetRoutersGateway(token, networkURL, networkID, routerID):
+    routerNumbers = len(routerID)
+    for i in range(routerNumbers):
+        params = '{"router":{"external_gateway_info":{"network_id":"%s"}}}' % networkID
+        headers = {"X-Auth-Token":token, "Content-type":"application/json"}
+        connection = httplib.HTTPConnection(networkURL)
+        connection.request("PUT", "/v2.0/routers/%s" % routerID[i], params, headers)
+        response = connection.getresponse()
+        response_data = response.read()
+        response_json = json.loads(response_data)
+        connection.close()
+
+def SetRoutersInterfaces(routerID, networkID):
+    routerNumbers = len(routerID)
+    for i in range(routerNumbers):
+        command = 'neutron router-interface-add "%s" "%s"' %router[i][0] %networkID[i][2]
+        os.system(command)
 
 
