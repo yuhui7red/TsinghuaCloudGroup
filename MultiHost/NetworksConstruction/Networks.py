@@ -28,7 +28,7 @@ def GetNetworksID(responseJson, tenantID):
     networksID = []
     for element in responseJson['networks']:
         if element['tenant_id'] == tenantID and element['name'][0:7] == 'network':
-            networksID.append([element['id'], element['name']])
+            networksID.append([element['id'], element['name'], element['subnets']])
     networksID = sorted(networksID, key=lambda d:d[1])
     return networksID
 

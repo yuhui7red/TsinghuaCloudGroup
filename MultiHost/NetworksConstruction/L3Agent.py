@@ -11,6 +11,7 @@ def GetL3AgentID(token, networkURL, routerID):
     response_data = response.read()
     response_json = json.loads(response_data)
     conn.close()
+    print response_json
     return response_json['agents'][0]['id']
 
 def RemoveRouterFromL3Agent(routerID, agentID):
@@ -28,7 +29,11 @@ def GetL3AgentPosition(host, user, passwd, db):
     data = cursor.fetchall()
     cursor.close()
     conn.close()
-    return data
+    l3Positions = []
+    for i in range(len(data)):
+       l3Positions.append([data[i][0], data[i][1]])
+    l3Positions = sorted(l3Positions, key=lambda d:d[1])
+    return l3Positions
 
 def ScheduleRouterToL3Agent(routerID, agentID):
     os.system('neutron l3-agent-router-add ' + agentID + ' ' + routerID)

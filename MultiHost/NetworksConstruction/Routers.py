@@ -42,7 +42,7 @@ def SetRoutersGateway(token, networkURL, networkID, routerID):
         params = '{"router":{"external_gateway_info":{"network_id":"%s"}}}' % networkID
         headers = {"X-Auth-Token":token, "Content-type":"application/json"}
         connection = httplib.HTTPConnection(networkURL)
-        connection.request("PUT", "/v2.0/routers/%s" % routerID[i], params, headers)
+        connection.request("PUT", "/v2.0/routers/%s" % routerID[i][0], params, headers)
         response = connection.getresponse()
         response_data = response.read()
         response_json = json.loads(response_data)
@@ -51,7 +51,8 @@ def SetRoutersGateway(token, networkURL, networkID, routerID):
 def SetRoutersInterfaces(routerID, networkID):
     routerNumbers = len(routerID)
     for i in range(routerNumbers):
-        command = 'neutron router-interface-add "%s" "%s"' %router[i][0] %networkID[i][2]
+        command = 'neutron router-interface-add "%s" "%s"' %(routerID[i][0], networkID[i][2][0])
+        print command
         os.system(command)
 
 
