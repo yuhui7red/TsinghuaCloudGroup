@@ -21,8 +21,8 @@ from VM	import CreateVM
 routerNumbers = 4
 routerPositions = ['cernet52', 'cernet53', 'cernet55', 'cernet58']
 vm = (2, 1, 2, 2, 1, 1, 2, 1)
-relations = ['router1', 'router1', 'router1', 'router2', 'router2', 'router2', 'router3', 'router3', 'router3', 'router4', 'router4', 'router4',]
-vmPosition = ['cernet51', 'cernet51', 'cernet52', 'cernet53', 'cernet53', 'cernet54', 'cernet54', 'cernet55', 'cernet56', 'cernet57', 'cernet57', 'cernet58']
+relations = ['router1', 'router1', 'router1', 'router2', 'router2', 'router3', 'router3', 'router3', 'router3', 'router4', 'router4', 'router4',]
+vmPosition = ['cernet51', 'cernet51', 'cernet52', 'cernet53', 'cernet53', 'cernet54', 'cernet54', 'cernet55', 'cernet56', 'cernet57', 'cernet57', 'cernet57']
 
 authentication = Authenticate('166.111.143.250', 'admin', 'admin', 'cer.cloud')
 apiToken = APIToken()
@@ -66,14 +66,13 @@ SetRoutersInterfaces(routersID, networksID)
 vmSum = sum(vm)
 for i in range(vmSum):
     netIndex = int(relations[i][6:]) - 1
-    subnetID = networksID[netIndex][2][0]
+    netID = networksID[netIndex][0]
     availabilityZone = vmPosition[i]
     if i == 0:
         name = 'master'
     else:
         name = 'slave%s' %i
-    CreateVM('1', '668bbb0c-36e6-46aa-a79a-6ed52a6569a9', availabilityZone, subnetID, name)
-    
+    CreateVM('1', '668bbb0c-36e6-46aa-a79a-6ed52a6569a9', availabilityZone, netID, name)
 
 
 
