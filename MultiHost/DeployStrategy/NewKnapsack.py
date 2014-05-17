@@ -25,3 +25,4 @@ def NewKnapsack(vmOnServer, agentNumber, optimal):
     
     result.sort()
     return result
+
