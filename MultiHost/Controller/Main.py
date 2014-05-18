@@ -178,6 +178,11 @@ print 'optimal relationship between vm and agent: \n %s' %relations
 #print relations
 #print vmPosition
 
+
+authentication = Authenticate(controllerIP, userName, tenantName, HorizonPW)
+apiToken = APIToken()
+apiToken._authentication = authentication
+token = apiToken.GetToken()
 networkURL = apiToken.GetNetworkIP()
 tenantID = apiToken.GetTenantID()
 tenantID = tenantID[4:]
