@@ -29,7 +29,7 @@ from Networks import ListNetworks, CreateNetworks, GetNetworksID
 from L3Agent import GetL3AgentID, GetL3AgentPosition, RemoveRouterFromL3Agent, ScheduleRouterToL3Agent
 from VM import CreateVM
 
-print '''Welcome to the Tomon[version: 1.0.0].
+print '''Welcome to the TOMON[version: 1.0.0].
 
 Copyright (c) 2014, TsinghuaCloud and/or its affiliates. All rights reserved.
 '''
