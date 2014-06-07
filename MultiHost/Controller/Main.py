@@ -12,6 +12,7 @@ if not "../DeployStrategy/" in sys.path:
 if not "../AssignStrategy/" in sys.path:
     sys.path.append("../AssignStrategy/")
 
+import getpass
 import os, urllib, httplib, json, base64, string
 from urlparse import urlparse
 from APIToken import APIToken
@@ -37,8 +38,8 @@ Copyright (c) 2014, TsinghuaCloud and/or its affiliates. All rights reserved.
 controllerIP = raw_input('controller ip address: ')
 userName = raw_input('username: ')
 tenantName = raw_input('tenant name: ')
-HorizonPW = raw_input('dashboard password: ')
-mysqlPW = raw_input('mysql password: ')
+HorizonPW = getpass.getpass('dashboard password: ')
+mysqlPW = getpass.getpass('mysql password: ')
 
 #authentication = Authenticate('166.111.143.250', 'admin', 'admin', 'cer.cloud')
 authentication = Authenticate(controllerIP, userName, tenantName, HorizonPW)

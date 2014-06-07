@@ -12,6 +12,7 @@ if not "../DeployStrategy/" in sys.path:
 if not "../AssignStrategy/" in sys.path:
     sys.path.append("../AssignStrategy/")
 
+import getpass
 import os, urllib, httplib, json, base64, string
 from urlparse import urlparse
 from APIToken import APIToken
@@ -34,11 +35,16 @@ print '''Welcome to the TOMON[version: 1.0.0].
 Copyright (c) 2014, TsinghuaCloud and/or its affiliates. All rights reserved.
 '''
 
-controllerIP = raw_input('controller ip address: ')
-userName = raw_input('username: ')
-tenantName = raw_input('tenant name: ')
-HorizonPW = raw_input('dashboard password: ')
-mysqlPW = raw_input('mysql password: ')
+#controllerIP = raw_input('controller ip address: ')
+#userName = raw_input('username: ')
+#tenantName = raw_input('tenant name: ')
+#HorizonPW = getpass.getpass('dashboard password: ')
+#mysqlPW = getpass.getpass('mysql password: ')
+controllerIP = '166.111.143.250'
+userName = 'admin'
+tenantName = 'admin'
+HorizonPW = 'cer.cloud'
+mysqlPW = 'cer.cloud'
 
 #authentication = Authenticate('166.111.143.250', 'admin', 'admin', 'cer.cloud')
 authentication = Authenticate(controllerIP, userName, tenantName, HorizonPW)
@@ -49,6 +55,7 @@ computeIP = apiToken.GetComputeIP()
 tenantID = apiToken.GetTenantID()
 
 computeNodesInfo = GetComputeNodesInfo(controllerIP, 'root', mysqlPW, 'nova')
+#computeNodesInfo = GetComputeNodesInfo('166.111.143.250', 'root', 'cer.cloud', 'nova')
 serverNumber = len(computeNodesInfo)
 serverInfo = [[0 for i in range(4)] for i in range(serverNumber)]
 
