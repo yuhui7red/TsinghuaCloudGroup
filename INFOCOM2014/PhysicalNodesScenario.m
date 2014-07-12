@@ -2,18 +2,20 @@ function [TimeSum] = PhysicalNodesScenario(NodesNumber, DataSumSize, DataSliceNu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SimpleScenario.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     % Author£ºWilliam Yu
-     % Date£º2014/7/7
-     % Revisor£º
-     % Date£º
-     % Function£º1.***; 2.***;
-     % Input£º1.***; 2.***;
-     % Output£º1.***; 2.***;
+     % Authorï¿½ï¿½William Yu
+     % Dateï¿½ï¿½2014/7/7
+     % Revisorï¿½ï¿½
+     % Dateï¿½ï¿½
+     % Functionï¿½ï¿½1.***; 2.***;
+     % Inputï¿½ï¿½1.***; 2.***;
+     % Outputï¿½ï¿½1.***; 2.***;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % the Process of HDFS
-[DataSliceSize, DataSliceNumberPerNode, TaskSize, TaskNumber, HDFSResult, HDFSCopy] = HDFS(NodesNumber, DataSumSize, DataSliceNumber);
+[DataSliceSize, DataSliceNumberPerNode, TaskSize, TaskNumber, HDFSMeta, HDFSCopy, HDFSResult] = HDFS(NodesNumber, DataSumSize, DataSliceNumber);
 
+
+TimeSum = []
 
 
 

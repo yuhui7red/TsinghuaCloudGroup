@@ -1,14 +1,14 @@
-function [DataSliceSize, DataSliceNumberPerNode, TaskSize, TaskNumber, HDFSResult, HDFSCopy] = HDFS(NodesNumber, DataSumSize, DataSliceNumber)
+function [DataSliceSize, DataSliceNumberPerNode, TaskSize, TaskNumber, HDFSMeta, HDFSCopy, HDFSResult] = HDFS(NodesNumber, DataSumSize, DataSliceNumber)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % HDFS.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     % Author£ºWilliam Yu
-     % Date£º2014/7/7
-     % Revisor£º
-     % Date£º
-     % Function£º1.***; 2.***;
-     % Input£º1.***; 2.***;
-     % Output£º1.***; 2.***;
+     % Authorï¿½ï¿½William Yu
+     % Dateï¿½ï¿½2014/7/7
+     % Revisorï¿½ï¿½
+     % Dateï¿½ï¿½
+     % Functionï¿½ï¿½1.***; 2.***;
+     % Inputï¿½ï¿½1.***; 2.***;
+     % Outputï¿½ï¿½1.***; 2.***;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 DataSliceSize = DataSumSize / DataSliceNumber;
@@ -16,11 +16,11 @@ TaskSize = DataSliceSize;
 TaskNumber = DataSliceNumber;
 
 % the Process of HDFS
-HDFSResult = [];
+HDFSMeta = [];
 DataSliceNumberPerNode = DataSliceNumber / NodesNumber;
 DataSlice = randperm(DataSliceNumber);
 for i = 1: 1: NodesNumber
-    HDFSResult = [HDFSResult; DataSlice(1+(i-1)*DataSliceNumberPerNode: i*DataSliceNumberPerNode)];
+    HDFSMeta = [HDFSMeta; DataSlice(1+(i-1)*DataSliceNumberPerNode: i*DataSliceNumberPerNode)];
 end
 
 % Copy the Data Slice
@@ -52,6 +52,15 @@ while IsConflicting == 1
         end
     end
 end
+
+TempCopy = HDFSCopy;
+HDFSCopy = [];
+for i = 1: 1: length(TempCopy)
+    TempCopyLine = [HDFSMeta(TempCopy(i, 1), :), HDFSMeta(TempCopy(i, 2), :)];
+    HDFSCopy = [HDFSCopy; TempCopyLine];
+end
+
+HDFSResult = [HDFSMeta, HDFSCopy];
 
 end
 
