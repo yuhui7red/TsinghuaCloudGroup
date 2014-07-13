@@ -1,6 +1,6 @@
 function [ElapsedTimeSum, Clock] = PhysicalNodesScenario(NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% SimpleScenario.m
+% PhysicalNodesScenario.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
      % Author: William Yu
      % Date: 2014/7/7
@@ -34,7 +34,7 @@ end
 Clock = 0;
 while sum(TaskState) ~= FinishFlag
     Clock = Clock + 1;
-    for i = 1: 1: length(NodesCount)
+    for i = 1: 1: NodesCount
         if ServerState(i) == 0
             continue;
         end
@@ -50,28 +50,32 @@ while sum(TaskState) ~= FinishFlag
                 if ServerCompletedTaskCount(i) < CopyTaskFlag
                     if TaskState(HDFSResult(i, ServerCompletedTaskCount(i)+1)) == 0
                         TaskState(HDFSResult(i, ServerCompletedTaskCount(i)+1)) = 1;
-                        PresentTaskNumber(i) = HDFSResult(i, ServerCompletedTaskCount(i));
+                        PresentTaskNumber(i) = HDFSResult(i, ServerCompletedTaskCount(i)+1);
                         PresentTaskRest(i) = TaskSize - (ProcessingRate(i) - PresentTaskRest(i));
                         ServerElapsedTime(i) = ServerElapsedTime(i) + 1;
                         IsFindTask = 1;
+                    else
+                        ServerCompletedTaskCount(i) = ServerCompletedTaskCount(i) + 1;
                     end
                 else
                     RestTaskPosition = 0;
-                    for r = 1: 1: length(TaskCount)
-                        if TaskCount(i) == 0
-                            RestTaskPosition = i;
+                    for r = 1: 1: TaskCount
+                        if TaskState(r) == 0
+                            RestTaskPosition = r;
                             break;
                         end
                     end
                     if RestTaskPosition == 0
                         ServerElapsedTime(i) = ServerElapsedTime(i) + 1;
+                        PresentTaskRest(i) = 0;
                         ServerState(i) = 0;
                         break;
                     else
                         TaskState(RestTaskPosition) = 1;
                         PresentTaskNumber(i) = RestTaskPosition;
-                        PresentTaskRest(i) = TaskSize + TaskSize/TransmissionRate*ProcessingRate - (ProcessingRate(i) - PresentTaskRest(i));
+                        PresentTaskRest(i) = TaskSize + TaskSize/TransmissionRate*ProcessingRate(i) - (ProcessingRate(i) - PresentTaskRest(i));
                         ServerElapsedTime(i) = ServerElapsedTime(i) + 1;
+                        IsFindTask = 1;
                     end                   
                 end             
             end
@@ -79,6 +83,10 @@ while sum(TaskState) ~= FinishFlag
     end
 end
 
+%PresentTaskRest'
+%TaskState'
+%ServerState'
+%ServerElapsedTime
 ElapsedTimeSum = sum(ServerElapsedTime);
 
 end
