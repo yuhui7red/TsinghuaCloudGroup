@@ -1,0 +1,2 @@
+[DataSliceSize, DataSliceCountPerNode, TaskSize, TaskCount, HDFSMeta, HDFSCopy, HDFSResult] = HDFS(10, 900, 30)
+[TimeSum] = PhysicalNodesScenario(10, 900, 30, 1, 1)

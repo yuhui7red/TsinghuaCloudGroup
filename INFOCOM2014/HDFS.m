@@ -1,26 +1,27 @@
-function [DataSliceSize, DataSliceNumberPerNode, TaskSize, TaskNumber, HDFSMeta, HDFSCopy, HDFSResult] = HDFS(NodesNumber, DataSumSize, DataSliceNumber)
+function [DataSliceSize, DataSliceCountPerNode, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult] = HDFS(NodesCount, DataSumSize, DataSliceCount)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % HDFS.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-     % Author��William Yu
-     % Date��2014/7/7
-     % Revisor��
-     % Date��
-     % Function��1.***; 2.***;
-     % Input��1.***; 2.***;
-     % Output��1.***; 2.***;
+     % Author: William Yu
+     % Date: 2014/7/7
+     % Revisor:
+     % Date:
+     % Function: 1.***; 2.***;
+     % Input: 1.***; 2.***;
+     % Output: 1.***; 2.***;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-DataSliceSize = DataSumSize / DataSliceNumber;
+DataSliceSize = DataSumSize / DataSliceCount;
 TaskSize = DataSliceSize;
-TaskNumber = DataSliceNumber;
+TaskCount = DataSliceCount;
 
 % the Process of HDFS
 HDFSMeta = [];
-DataSliceNumberPerNode = DataSliceNumber / NodesNumber;
-DataSlice = randperm(DataSliceNumber);
-for i = 1: 1: NodesNumber
-    HDFSMeta = [HDFSMeta; DataSlice(1+(i-1)*DataSliceNumberPerNode: i*DataSliceNumberPerNode)];
+DataSliceCountPerNode = DataSliceCount / NodesCount;
+TaskCountPerNode = DataSliceCountPerNode;
+DataSlice = randperm(DataSliceCount);
+for i = 1: 1: NodesCount
+    HDFSMeta = [HDFSMeta; DataSlice(1+(i-1)*DataSliceCountPerNode: i*DataSliceCountPerNode)];
 end
 
 % Copy the Data Slice
@@ -28,7 +29,7 @@ HDFSCopy = [];
 IsConflicting = 1;
 while IsConflicting == 1
     IsConflicting = 0;
-    HDFSCopy = randperm(NodesNumber)';
+    HDFSCopy = randperm(NodesCount)';
     HDFSCopy = [HDFSCopy, HDFSCopy(end: -1: 1)];
     for i = 1: 1: length(HDFSCopy)
         if HDFSCopy(i, 1) == HDFSCopy(i, 2)
@@ -43,7 +44,7 @@ while IsConflicting == 1
     IsConflicting = 0;
     for i = 1: 1: length(HDFSCopy)
         if i == HDFSCopy(i, 1) || i == HDFSCopy(i, 2)
-            RandomNumber = round(rand()*(NodesNumber-1) + 1);
+            RandomNumber = round(rand()*(NodesCount-1) + 1);
             temp = HDFSCopy(i, :);
             HDFSCopy(i, :) = HDFSCopy(RandomNumber, :);
             HDFSCopy(RandomNumber, :) = temp;

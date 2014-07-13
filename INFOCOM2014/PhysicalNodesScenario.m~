@@ -18,7 +18,6 @@ FinishFlag = 2*TaskCount;
 MetaTaskFlag = TaskCountPerNode;
 CopyTaskFlag = MetaTaskFlag + 2*TaskCountPerNode;
 
-ServerState = zeros(NodesCount, 1) + 1;
 PresentTaskRest = zeros(NodesCount, 1) + TaskSize;
 ServerCompletedTaskCount = zeros(NodesCount, 1);
 ServerElapsedTime = zeros(NodesCount, 1);
@@ -35,9 +34,6 @@ Clock = 0;
 while sum(TaskState) ~= FinishFlag
     Clock = Clock + 1;
     for i = 1: 1: length(NodesCount)
-        if ServerState(i) == 0
-            continue;
-        end
         if PresentTaskRest(i) - ProcessingRate(i) > 0
             PresentTaskRest(i) = PresentTaskRest(i) - ProcessingRate(i);
             ServerElapsedTime(i) = ServerElapsedTime(i) + 1;
@@ -65,7 +61,6 @@ while sum(TaskState) ~= FinishFlag
                     end
                     if RestTaskPosition == 0
                         ServerElapsedTime(i) = ServerElapsedTime(i) + 1;
-                        ServerState(i) = 0;
                         break;
                     else
                         TaskState(RestTaskPosition) = 1;
@@ -80,6 +75,18 @@ while sum(TaskState) ~= FinishFlag
 end
 
 ElapsedTimeSum = sum(ServerElapsedTime);
+
+%HDFSMeta
+%FinishFlag
+%MetaTaskFlag
+%CopyTaskFlag
+%ServerState
+%PresentTaskRest
+%ServerCompletedTaskCount
+%ServerElapsedTime
+%PresentTaskNumber
+%TaskState
+%ElapsedTimeSum = 10
 
 end
 
