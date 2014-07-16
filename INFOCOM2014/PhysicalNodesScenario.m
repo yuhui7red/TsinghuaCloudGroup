@@ -1,4 +1,4 @@
-function [ElapsedTimeSum, Clock, DataLocalityNumber] = PhysicalNodesScenario(NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate)
+function [ElapsedTimeSum, Clock, DataLocalityNumber, DataLocalityStartTime, DataLocalityEndNode] = PhysicalNodesScenario(NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PhysicalNodesScenario.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -15,7 +15,7 @@ function [ElapsedTimeSum, Clock, DataLocalityNumber] = PhysicalNodesScenario(Nod
 [DataSliceSize, DataSliceCountPerNode, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult] = HDFS(NodesCount, DataSumSize, DataSliceCount);
 
 % the Process of Map
-[ServerElapsedTime, Clock, DataLocalityNumber] = Map(NodesCount, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult, ProcessingRate, TransmissionRate);
+[ServerElapsedTime, Clock, DataLocalityNumber, DataLocalityStartTime, DataLocalityEndNode] = Map(NodesCount, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult, ProcessingRate, TransmissionRate);
 
 % the Total Elapsed Time
 ElapsedTimeSum = sum(ServerElapsedTime);

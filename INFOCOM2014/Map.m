@@ -1,4 +1,4 @@
-function [ServerElapsedTime, Clock, DataLocalityNumber] = Map(NodesCount, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult, ProcessingRate, TransmissionRate)
+function [ServerElapsedTime, Clock, DataLocalityNumber, DataLocalityStartTime, DataLocalityEndNode] = Map(NodesCount, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult, ProcessingRate, TransmissionRate)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Map.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,6 +29,8 @@ end
 
 % the Process of Map
 DataLocalityNumber = [];
+DataLocalityStartTime = [];
+DataLocalityEndNode = [];
 Clock = 0;
 while sum(TaskState) ~= FinishFlag
     Clock = Clock + 1;
@@ -73,6 +75,8 @@ while sum(TaskState) ~= FinishFlag
                         PresentTaskNumber(i) = RestTaskPosition;
                         PresentTaskRest(i) = TaskSize + TaskSize/TransmissionRate*ProcessingRate(i) - (ProcessingRate(i) - PresentTaskRest(i));
                         DataLocalityNumber = [DataLocalityNumber; PresentTaskNumber(i)];
+                        DataLocalityStartTime = [DataLocalityStartTime; Clock];
+                        DataLocalityEndNode = [DataLocalityEndNode; i];
                         ServerElapsedTime(i) = ServerElapsedTime(i) + 1;
                         IsFindTask = 1;
                     end                   
