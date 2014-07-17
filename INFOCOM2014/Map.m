@@ -22,7 +22,7 @@ ServerElapsedTime = zeros(NodesCount, 1);
 
 PresentTaskNumber = [];
 TaskState = zeros(TaskCount, 1);
-for i = 1: 1: length(HDFSMeta)
+for i = 1: 1: size(HDFSMeta, 1)
     PresentTaskNumber = [PresentTaskNumber; HDFSMeta(i, 1)];
     TaskState(HDFSMeta(i, 1)) = 1;
 end

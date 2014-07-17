@@ -1,4 +1,4 @@
-function [ElapsedTimeSum, Clock, DataLocalityNumber, DataLocalityStartTime, DataLocalityEndNode] = VirtualMachineScenario(NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate)
+function [ElapsedTimeSum, Clock, DataLocalityNumber, DataLocalityStartTime, DataLocalityEndNode, VirtualMachinePosition] = VirtualMachineScenario(NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % VirtualMachineScenario.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,10 +24,18 @@ for i = 1: 1: NodesCount
 end
 
 VirtualMachineProcessingRate = [];
-for i = 1: 1: VitualMachineCount
-    VitualMachineProcessingRate = [VirtualMachieProcessingRate; (1 - VirtualMachinePerNodeCount(VirtualMachinePosition(i))) / MigrationCapacity(i)];
+for i = 1: 1: VirtualMachineCount
+    VirtualMachineProcessingRate = [VirtualMachineProcessingRate; (1 - 1 / MigrationCapacity(VirtualMachinePosition(i))) * FlavorProcessingRate];
 end
 
+% the Process of HDFS
+[DataSliceSize, DataSliceCountPerNode, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult] = HDFS(VirtualMachineCount, DataSumSize, DataSliceCount);
+
+% the Process of Map
+[ServerElapsedTime, Clock, DataLocalityNumber, DataLocalityStartTime, DataLocalityEndNode] = Map(VirtualMachineCount, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult, VirtualMachineProcessingRate, TransmissionRate);
+
+% the Total Elapsed Time
+ElapsedTimeSum = sum(ServerElapsedTime);
 
 end
 

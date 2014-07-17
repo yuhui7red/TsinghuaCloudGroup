@@ -31,7 +31,7 @@ while IsConflicting == 1
     IsConflicting = 0;
     HDFSCopy = randperm(NodesCount)';
     HDFSCopy = [HDFSCopy, HDFSCopy(end: -1: 1)];
-    for i = 1: 1: length(HDFSCopy)
+    for i = 1: 1: size(HDFSCopy, 1)
         if HDFSCopy(i, 1) == HDFSCopy(i, 2)
             IsConflicting = 1;
             break;
@@ -42,7 +42,7 @@ end
 IsConflicting = 1;
 while IsConflicting == 1
     IsConflicting = 0;
-    for i = 1: 1: length(HDFSCopy)
+    for i = 1: 1: size(HDFSCopy, 1)
         if i == HDFSCopy(i, 1) || i == HDFSCopy(i, 2)
             RandomNumber = round(rand()*(NodesCount-1) + 1);
             temp = HDFSCopy(i, :);
@@ -56,7 +56,7 @@ end
 
 TempCopy = HDFSCopy;
 HDFSCopy = [];
-for i = 1: 1: length(TempCopy)
+for i = 1: 1: size(TempCopy, 1)
     TempCopyLine = [HDFSMeta(TempCopy(i, 1), :), HDFSMeta(TempCopy(i, 2), :)];
     HDFSCopy = [HDFSCopy; TempCopyLine];
 end
