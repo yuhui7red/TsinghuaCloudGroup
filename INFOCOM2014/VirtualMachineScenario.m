@@ -35,7 +35,7 @@ end
 [ServerElapsedTime, Clock, DataLocalityNumber, DataLocalityStartTime, DataLocalityEndNode] = Map(VirtualMachineCount, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult, VirtualMachineProcessingRate, TransmissionRate);
 
 % the Total Elapsed Time
-ElapsedTimeSum = sum(ServerElapsedTime);
+ElapsedTimeSum = sum(ServerElapsedTime);  
 
 end
 
