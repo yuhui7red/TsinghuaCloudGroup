@@ -1,4 +1,5 @@
-function [ElapsedTimeSum, Clock, DataLocalityNumber, DataLocalityDataSize, DataLocalityStartTime, DataLocalityEndNode, VirtualMachinePosition] = VirtualMachineScenario(NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate)
+function [ArrivalTimePerJob, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob] = ...
+    VirtualMachineScenario(JobCount, NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % VirtualMachineScenario.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,31 +12,33 @@ function [ElapsedTimeSum, Clock, DataLocalityNumber, DataLocalityDataSize, DataL
      % Output: 1.***; 2.***;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-VirtualMachineCount = sum(PhysicalNodeProcessingRate) / FlavorProcessingRate;
-VirtualMachinePerNodeCount = [];
-MigrationCapacity = [];
-VirtualMachinePosition = [];
-for i = 1: 1: NodesCount
-    VirtualMachinePerNodeCount = [VirtualMachinePerNodeCount; PhysicalNodeProcessingRate(i) / FlavorProcessingRate];
-    MigrationCapacity = [MigrationCapacity; round(rand())+2];
-    for r = 1: 1: VirtualMachinePerNodeCount(i)
-        VirtualMachinePosition = [VirtualMachinePosition; i];
+WaitingTimePerJob = zeros(JobCount, 1);
+ArrivalTimePerJob = zeros(JobCount, 1);
+StartTimePerJob = zeros(JobCount, 1);
+StartTimePerJob(1) = 1;
+FinishTimePerJob = zeros(JobCount, 1);
+
+for i = 1: 1: JobCount
+    [ElapsedTimeSum, ProcessingClock, DataLocalityNumber, DataLocalityDataSize, DataLocalityStartTime, DataLocalityEndNode, VirtualMachinePosition] = ...
+        VitrualMachineProcessingTime(NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate);
+    
+    if i == 1
+        FirstProcessingClock = ProcessingClock;
+        [ArrivalTimePerJob] = Poisson(FirstProcessingClock*1.1, JobCount);
+    end  
+    
+    FinishTimePerJob(i) = StartTimePerJob(i) + ProcessingClock;
+    
+    if i == JobCount
+        break;
+    end
+    
+    if FinishTimePerJob(i) <= ArrivalTimePerJob(i+1)
+        StartTimePerJob(i+1) = ArrivalTimePerJob(i+1);        
+    else
+        StartTimePerJob(i+1) = FinishTimePerJob(i);
+        WaitingTimePerJob(i+1) = StartTimePerJob(i+1) - ArrivalTimePerJob(i+1);
     end
 end
 
-VirtualMachineProcessingRate = [];
-for i = 1: 1: VirtualMachineCount
-    VirtualMachineProcessingRate = [VirtualMachineProcessingRate; (1 - 1 / MigrationCapacity(VirtualMachinePosition(i))) * FlavorProcessingRate];
 end
-
-% the Process of HDFS
-[DataSliceSize, DataSliceCountPerNode, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult] = HDFS(VirtualMachineCount, DataSumSize, DataSliceCount);
-
-% the Process of Map
-[ServerElapsedTime, Clock, DataLocalityNumber, DataLocalityDataSize, DataLocalityStartTime, DataLocalityEndNode] = Map(VirtualMachineCount, TaskSize, TaskCount, TaskCountPerNode, HDFSMeta, HDFSCopy, HDFSResult, VirtualMachineProcessingRate, TransmissionRate);
-
-% the Total Elapsed Time
-ElapsedTimeSum = sum(ServerElapsedTime);  
-
-end
-

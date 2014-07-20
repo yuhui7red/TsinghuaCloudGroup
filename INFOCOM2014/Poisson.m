@@ -1,4 +1,4 @@
-function [ArrivalTime] = Poisson(ArrivalTimeExpectation)
+function [ArrivalTime] = Poisson(ArrivalTimeExpectation, ArrivalCount)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Poisson.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,7 +11,13 @@ function [ArrivalTime] = Poisson(ArrivalTimeExpectation)
      % Output: 1.***; 2.***;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-ArrivalTime = exprnd(ArrivalTimeExpectation);
+ArrivalTime = round(exprnd(ArrivalTimeExpectation, ArrivalCount-1, 1));
+
+ArrivalTime = [1; ArrivalTime];
+
+for i = 2: 1: length(ArrivalTime)
+    ArrivalTime(i) = ArrivalTime(i) + ArrivalTime(i-1);
+end
 
 end
 
