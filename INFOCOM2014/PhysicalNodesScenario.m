@@ -1,4 +1,5 @@
-function [ArrivalTimePerJob, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob] = PhysicalNodesScenario(JobCount, NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate)
+function [ArrivalTimePerJob, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob] = ...
+    PhysicalNodesScenario(JobCount, NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PhysicalNodesScenario.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

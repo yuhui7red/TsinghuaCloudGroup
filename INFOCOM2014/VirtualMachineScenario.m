@@ -1,5 +1,5 @@
-function [ArrivalTimePerJob, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob] = ...
-    VirtualMachineScenario(JobCount, NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate)
+function [ArrivalTimePerJobVM, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob] = ...
+    VirtualMachineScenario(JobCount, NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate, ArrivalTimePerJobPM)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % VirtualMachineScenario.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17,15 +17,11 @@ ArrivalTimePerJob = zeros(JobCount, 1);
 StartTimePerJob = zeros(JobCount, 1);
 StartTimePerJob(1) = 1;
 FinishTimePerJob = zeros(JobCount, 1);
+ArrivalTimePerJobVM = ArrivalTimePerJobPM;
 
 for i = 1: 1: JobCount
     [ElapsedTimeSum, ProcessingClock, DataLocalityNumber, DataLocalityDataSize, DataLocalityStartTime, DataLocalityEndNode, VirtualMachinePosition] = ...
         VitrualMachineProcessingTime(NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate);
-    
-    if i == 1
-        FirstProcessingClock = ProcessingClock;
-        [ArrivalTimePerJob] = Poisson(FirstProcessingClock*1.1, JobCount);
-    end  
     
     FinishTimePerJob(i) = StartTimePerJob(i) + ProcessingClock;
     
@@ -33,11 +29,11 @@ for i = 1: 1: JobCount
         break;
     end
     
-    if FinishTimePerJob(i) <= ArrivalTimePerJob(i+1)
-        StartTimePerJob(i+1) = ArrivalTimePerJob(i+1);        
+    if FinishTimePerJob(i) <= ArrivalTimePerJobVM(i+1)
+        StartTimePerJob(i+1) = ArrivalTimePerJobVM(i+1);        
     else
         StartTimePerJob(i+1) = FinishTimePerJob(i);
-        WaitingTimePerJob(i+1) = StartTimePerJob(i+1) - ArrivalTimePerJob(i+1);
+        WaitingTimePerJob(i+1) = StartTimePerJob(i+1) - ArrivalTimePerJobVM(i+1);
     end
 end
 

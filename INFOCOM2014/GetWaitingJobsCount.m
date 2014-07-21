@@ -1,4 +1,4 @@
-function [] = GetWaitingJobsCount(ArrivalTimePerJob, StartTimePerJob, Clock)
+function [WaitingJobsCount] = GetWaitingJobsCount(ArrivalTimePerJob, StartTimePerJob, Clock)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GetWaitingJobsCount.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -13,7 +13,7 @@ function [] = GetWaitingJobsCount(ArrivalTimePerJob, StartTimePerJob, Clock)
 
 WaitingJobsCount = [];
 
-for i = 1: 1: Clock
+for i = 1: 200: Clock
     ArrivalJobsCount = 0;
     StartJobsCount = 0;
 
@@ -41,8 +41,6 @@ for i = 1: 1: Clock
     Temp = ArrivalJobsCount - StartJobsCount;
     WaitingJobsCount = [WaitingJobsCount, Temp];
 end
-
-plot(WaitingJobsCount);
 
 end
 
