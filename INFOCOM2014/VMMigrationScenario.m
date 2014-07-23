@@ -37,7 +37,7 @@ for i = 1: 1: JobCount
 end
 
 for i = 1: 1: JobCount
-    WaitingTimePerJob(i) = FinishTimePerJob(i) - ArrivalTimePerJob(i);
+    WaitingTimePerJob(i) = FinishTimePerJob(i) - ArrivalTimePerJobVM(i);
 end
 
 end

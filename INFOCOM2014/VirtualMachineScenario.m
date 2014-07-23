@@ -13,7 +13,6 @@ function [ArrivalTimePerJobVM, StartTimePerJob, FinishTimePerJob, WaitingTimePer
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 WaitingTimePerJob = zeros(JobCount, 1);
-ArrivalTimePerJob = zeros(JobCount, 1);
 StartTimePerJob = zeros(JobCount, 1);
 StartTimePerJob(1) = 1;
 FinishTimePerJob = zeros(JobCount, 1);
@@ -36,7 +35,7 @@ for i = 1: 1: JobCount
 end
 
 for i = 1: 1: JobCount
-    WaitingTimePerJob(i) = FinishTimePerJob(i) - ArrivalTimePerJob(i);
+    WaitingTimePerJob(i) = FinishTimePerJob(i) - ArrivalTimePerJobVM(i);
 end
 
 end

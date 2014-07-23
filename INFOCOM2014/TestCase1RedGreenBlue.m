@@ -9,7 +9,7 @@
 [WaitingJobsCountVM] = GetWaitingJobsCount(ArrivalTimePerJobPM, StartTimePerJobVM,  180000);
 [WaitingJobsCountVMM] = GetWaitingJobsCount(ArrivalTimePerJobPM, StartTimePerJobVMM,  180000);
 
-plot(WaitingJobsCountPM, 'blue');
+plot(WaitingJobsCountPM, 'b*--');
 hold on;
-plot(WaitingJobsCountVM, 'red');
-plot(WaitingJobsCountVMM, 'green');
+plot(WaitingJobsCountVM, 'r+--');
+plot(WaitingJobsCountVMM, 'go--');
