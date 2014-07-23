@@ -22,7 +22,6 @@ ArrivalTimePerJobVM = ArrivalTimePerJobPM;
 for i = 1: 1: JobCount
     [ElapsedTimeSum, ProcessingClock, DataLocalityNumber, DataLocalityDataSize, DataLocalityStartTime, DataLocalityEndNode, VirtualMachinePosition] = ...
         VitrualMachineProcessingTime(NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate);
-    
     FinishTimePerJob(i) = StartTimePerJob(i) + ProcessingClock;
     
     if i == JobCount
@@ -33,8 +32,11 @@ for i = 1: 1: JobCount
         StartTimePerJob(i+1) = ArrivalTimePerJobVM(i+1);        
     else
         StartTimePerJob(i+1) = FinishTimePerJob(i);
-        WaitingTimePerJob(i+1) = StartTimePerJob(i+1) - ArrivalTimePerJobVM(i+1);
     end
+end
+
+for i = 1: 1: JobCount
+    WaitingTimePerJob(i) = FinishTimePerJob(i) - ArrivalTimePerJob(i);
 end
 
 end

@@ -37,11 +37,12 @@ for i = 1: 1: JobCount
         StartTimePerJob(i+1) = ArrivalTimePerJob(i+1);        
     else
         StartTimePerJob(i+1) = FinishTimePerJob(i);
+        WaitingTimePerJob(i+1) = StartTimePerJob(i+1) - ArrivalTimePerJob(i+1);
     end
 end
 
 for i = 1: 1: JobCount
-    WaitingTimePerJob(i) = FinishTimePerJob(i) - ArrivalTimePerJob(i);
+    WaitingTimePerJob(i) = FinishTimePerJob(i) - Ar
 end
 
 end

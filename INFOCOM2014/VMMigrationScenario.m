@@ -1,10 +1,10 @@
-function [ArrivalTimePerJob, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob] = ...
-    PhysicalNodesScenario(JobCount, NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate)
+function [ArrivalTimePerJobVM, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob] = ...
+    VMMigrationScenario(JobCount, NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate, ArrivalTimePerJobPM)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PhysicalNodesScenario.m
+% VMMigrationScenario.m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
      % Author: William Yu
-     % Date: 2014/7/20
+     % Date: 2014/7/22
      % Revisor:
      % Date:
      % Function: 1.***; 2.***;
@@ -17,15 +17,11 @@ ArrivalTimePerJob = zeros(JobCount, 1);
 StartTimePerJob = zeros(JobCount, 1);
 StartTimePerJob(1) = 1;
 FinishTimePerJob = zeros(JobCount, 1);
+ArrivalTimePerJobVM = ArrivalTimePerJobPM;
 
 for i = 1: 1: JobCount
-    [ElapsedTimeSum, ProcessingClock, DataLocalityNumber, DataLocalityDataSize, DataLocalityStartTime, DataLocalityEndNode] = ...
-        PhysicalNodesProcessingTime(NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate);
-    
-    if i == 1
-        FirstProcessingClock = ProcessingClock;
-        [ArrivalTimePerJob] = Poisson(FirstProcessingClock*1.1, JobCount);
-    end  
+    [ElapsedTimeSum, ProcessingClock, DataLocalityNumber, DataLocalityDataSize, DataLocalityStartTime, DataLocalityEndNode, VirtualMachinePosition] = ...
+        VMMigrationProcessingTime(NodesCount, DataSumSize, DataSliceCount, PhysicalNodeProcessingRate, FlavorProcessingRate, TransmissionRate);
     
     FinishTimePerJob(i) = StartTimePerJob(i) + ProcessingClock;
     
@@ -33,8 +29,8 @@ for i = 1: 1: JobCount
         break;
     end
     
-    if FinishTimePerJob(i) <= ArrivalTimePerJob(i+1)
-        StartTimePerJob(i+1) = ArrivalTimePerJob(i+1);        
+    if FinishTimePerJob(i) <= ArrivalTimePerJobVM(i+1)
+        StartTimePerJob(i+1) = ArrivalTimePerJobVM(i+1);        
     else
         StartTimePerJob(i+1) = FinishTimePerJob(i);
     end
@@ -45,4 +41,3 @@ for i = 1: 1: JobCount
 end
 
 end
-
