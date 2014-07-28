@@ -1,4 +1,4 @@
-function [ArrivalTimePerJob, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob] = ...
+function [ArrivalTimePerJob, StartTimePerJob, FinishTimePerJob, WaitingTimePerJob, DataLocalityRate] = ...
     PhysicalNodesScenario(JobCount, NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PhysicalNodesScenario.m
@@ -17,10 +17,13 @@ ArrivalTimePerJob = zeros(JobCount, 1);
 StartTimePerJob = zeros(JobCount, 1);
 StartTimePerJob(1) = 1;
 FinishTimePerJob = zeros(JobCount, 1);
+DataLocalityRate = [];
 
 for i = 1: 1: JobCount
     [ElapsedTimeSum, ProcessingClock, DataLocalityNumber, DataLocalityDataSize, DataLocalityStartTime, DataLocalityEndNode] = ...
         PhysicalNodesProcessingTime(NodesCount, DataSumSize, DataSliceCount, ProcessingRate, TransmissionRate);
+    
+    DataLocalityRate = [DataLocalityRate; DataLocalityDataSize / DataSumSize];
     
     if i == 1
         FirstProcessingClock = ProcessingClock;
